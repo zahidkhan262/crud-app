@@ -1,22 +1,59 @@
-import React from "react";
-import {
-  Form,
-  FormGroup,
-  InputGroup,
-  Button,
-  FormControl,
-} from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Form, FormGroup, Button, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalState";
+import { v4 as uuidv4 } from "uuid";
+const Add = (props) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobileNo, setMobileNo] = useState("");
+  const { addUser } = useContext(GlobalContext);
 
-function Add() {
+  const history = useHistory();
+  const onSubmit = () => {
+    const newUser = {
+      id: uuidv4(),
+      name,
+      email,
+      mobileNo,
+    };
+    addUser(newUser);
+    history.push("/");
+  };
+
   return (
     <div>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <FormGroup>
-          <FormControl type="text" placeholder="Enter your Name.." />
+          <FormControl
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Add Name.."
+          />
         </FormGroup>
-        <Button type="submit" className="my-3 ">
-          Submit
+        <FormGroup className="mt-2">
+          <FormControl
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Add Email.."
+          />
+        </FormGroup>
+        <FormGroup className="mt-2">
+          <FormControl
+            type="text"
+            maxLength="10"
+            value={mobileNo}
+            onChange={(e) => setMobileNo(e.target.value)}
+            placeholder="Add Mobile no.."
+          />
+        </FormGroup>
+        <Button type="submit" className="my-3 px-3 ">
+          Submit <FontAwesomeIcon icon={faPlus} />
         </Button>
         <Link to="/" className="btn btn-danger mx-2">
           Cancel
@@ -24,6 +61,6 @@ function Add() {
       </Form>
     </div>
   );
-}
+};
 
 export default Add;

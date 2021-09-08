@@ -1,22 +1,91 @@
-import React from "react";
-import {
-  Form,
-  FormGroup,
-  InputGroup,
-  Button,
-  FormControl,
-} from "react-bootstrap";
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Form, FormGroup, Button, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalState";
+import { v4 as uuidv4 } from "uuid";
+const Edit = (props) => {
+  // const [selectedUser, setSelectedUser] = useState({
+  //   id: uuidv4(),
+  //   name: "name",
+  //   email: "email",
+  //   mobileNo: "mobileNo",
+  // });
 
-function Edit() {
+  const [selectedUserName, setSelectedUserName] = useState("");
+  const [selectedUserEmail, setSelectedUserEmail] = useState("");
+  const [selectedUserPhone, setSelectedUserPhone] = useState("");
+
+  const { users, editUser } = useContext(GlobalContext);
+
+  const history = useHistory();
+
+  // useEffect(() => {
+  //   const userId = currentUserId;
+  //   const selectedUser = users.find((user) => user.id === userId);
+  //   // console.log(selectedUser);
+  //   setSelectedUser(selectedUser);
+  // }, [currentUserId, users]);
+
+  useEffect(() => {
+    const currentUserId = props.match.params[1];
+    users.map((singleUser) => {
+      if (singleUser.id == currentUserId) {
+        setSelectedUserName(singleUser.name);
+        setSelectedUserEmail(singleUser.email);
+        setSelectedUserPhone(singleUser.mobileNo);
+      }
+    });
+  }, []);
+
+  const onSubmit = () => {
+    const selectedUser = {
+      id: props.match.params[1],
+      name: selectedUserName,
+      email: selectedUserEmail,
+      mobileNo: selectedUserPhone,
+    };
+
+    editUser(selectedUser);
+
+    history.push("/");
+  };
+
   return (
     <div>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <FormGroup>
-          <FormControl type="text" placeholder="Edit Your Name.." />
+          <FormControl
+            type="text"
+            name="name"
+            value={selectedUserName}
+            onChange={(event) => setSelectedUserName(event.target.value)}
+            placeholder="Add Name.."
+          />
         </FormGroup>
-        <Button type="submit" className="my-3 ">
-          Edit
+        <FormGroup className="mt-2">
+          <FormControl
+            type="email"
+            name="email"
+            value={selectedUserEmail}
+            onChange={(event) => setSelectedUserEmail(event.target.value)}
+            placeholder="Add Email.."
+          />
+        </FormGroup>
+        <FormGroup className="mt-2">
+          <FormControl
+            type="text"
+            maxLength="10"
+            name="mobileNo"
+            value={selectedUserPhone}
+            onChange={(event) => setSelectedUserPhone(event.target.value)}
+            placeholder="Add Mobile no.."
+          />
+        </FormGroup>
+        <Button type="submit" className="my-3 px-3 ">
+          Edit User <FontAwesomeIcon icon={faEdit} />
         </Button>
         <Link to="/" className="btn btn-danger mx-2">
           Cancel
@@ -24,6 +93,6 @@ function Edit() {
       </Form>
     </div>
   );
-}
+};
 
 export default Edit;

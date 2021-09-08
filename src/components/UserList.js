@@ -1,23 +1,49 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
-function UserList() {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { GlobalContext } from "../context/GlobalState";
+const UserList = () => {
+  const { users, removeUser } = useContext(GlobalContext);
   return (
     <>
       <ListGroup>
-        <ListGroupItem className="d-flex">
-          <strong>User One</strong>
+        {users.length > 0 ? (
+          <>
+            {users.map((user) => (
+              <ListGroupItem className="mt-3 bg-dark text-white rounded pt-2 ">
+                <p className="list">{`User Name : ${user.name}`}</p>
+                <p className="list">{`User Email : ${user.email}`}</p>
+                <p className="list">{`User Mobile : ${user.mobileNo}`}</p>
 
-          <div className="justify-content-end mx-auto">
-            <Link className="btn btn-warning mx-2 text-white" to="/edit/1">
-              Edit
-            </Link>
-            <Button className="btn btn-danger">Delete</Button>
-          </div>
-        </ListGroupItem>
+                <div className="justify-content-end mx-auto">
+                  <Link
+                    className="btn btn-warning mx-2 text-white"
+                    to={`/edit/${user.id}`}
+                  >
+                    Edit
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Link>
+                  <Button
+                    onClick={() => {
+                      removeUser(user.id);
+                    }}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
+                </div>
+              </ListGroupItem>
+            ))}
+          </>
+        ) : (
+          <h4 className="text-center mt-3">No Data here....</h4>
+        )}
       </ListGroup>
     </>
   );
-}
+};
 
 export default UserList;
