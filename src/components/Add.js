@@ -6,6 +6,8 @@ import { Form, FormGroup, Button, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+
 const Add = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +22,10 @@ const Add = (props) => {
       email,
       mobileNo,
     };
+
+    // toastify
+    toast.success("Successfully Add User");
+
     addUser(newUser);
     history.push("/");
   };

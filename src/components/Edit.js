@@ -6,6 +6,7 @@ import { Form, FormGroup, Button, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalState";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 const Edit = (props) => {
   // const [selectedUser, setSelectedUser] = useState({
   //   id: uuidv4(),
@@ -21,13 +22,6 @@ const Edit = (props) => {
   const { users, editUser } = useContext(GlobalContext);
 
   const history = useHistory();
-
-  // useEffect(() => {
-  //   const userId = currentUserId;
-  //   const selectedUser = users.find((user) => user.id === userId);
-  //   // console.log(selectedUser);
-  //   setSelectedUser(selectedUser);
-  // }, [currentUserId, users]);
 
   useEffect(() => {
     const currentUserId = props.match.params[1];
@@ -50,6 +44,7 @@ const Edit = (props) => {
 
     editUser(selectedUser);
 
+    toast.success("Successfully Updated");
     history.push("/");
   };
 

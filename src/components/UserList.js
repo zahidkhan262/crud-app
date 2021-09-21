@@ -4,8 +4,13 @@ import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { GlobalContext } from "../context/GlobalState";
+import { toast } from "react-toastify";
 const UserList = () => {
   const { users, removeUser } = useContext(GlobalContext);
+
+  const deleteUser = () => {
+    toast.error("Successfully Deleted");
+  };
   return (
     <>
       <ListGroup>
@@ -28,6 +33,7 @@ const UserList = () => {
                   <Button
                     onClick={() => {
                       removeUser(user.id);
+                      deleteUser();
                     }}
                     className="btn btn-danger"
                   >
